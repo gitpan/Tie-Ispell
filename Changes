@@ -1,5 +1,9 @@
 Revision history for Tie-Ispell
 
+0.02    2004, 17 December (13:13)
+	- Added support for exist($dic{word})
+	- Added support for store: $dic{word} = "now exists";
+
 0.01    2004, 17 December (11:57)
         - First version, released on an unsuspecting world
 	- First working minimally working version.

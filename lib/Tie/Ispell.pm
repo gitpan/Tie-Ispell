@@ -12,11 +12,11 @@ Tie::Ispell - Ties an hash with an ispell dictionary
 
 =head1 VERSION
 
-Version 0.01
+Version 0.02
 
 =cut
 
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
 =head1 SYNOPSIS
 
@@ -28,6 +28,12 @@ our $VERSION = '0.01';
     if ($dict{dog}) {
       print "dog is a word"
     }
+
+    if (exists($dict{dog})) {
+      print "dog is a word"
+    }
+
+    $dict{foo} = "now is a word :-)";
 
 =head1 FUNCTIONS
 
@@ -82,6 +88,53 @@ sub FETCH {
     return undef;
   }
 
+}
+
+
+=head2 EXISTS
+
+Checks if a word exists on the dictionary
+
+  exists($dic{dogs})
+
+=cut
+
+sub EXISTS {
+  my $self = shift;
+  my $word = shift;
+
+  return 0 unless $word =~ m!\w!;
+
+  print {$self->{write}} "$word\n";
+  my $x = $self->{read};
+  my $ans = <$x>;
+
+  <$x>;
+
+  if ($ans =~ m!^\*! || $ans =~ m!^\+\s(\w+)!) {
+    return 1
+  } else {
+    return 0
+  }
+
+}
+
+
+=head2 STORE
+
+Defines a new word for current session dictionary
+
+  $dic{foo} = 1;
+
+=cut
+
+sub STORE {
+  my $self = shift;
+  my $word = shift;
+
+  return 0 unless $word =~ m!\w!;
+
+  print {$self->{write}} "\@$word\n";
 }
 
 =head1 AUTHOR
