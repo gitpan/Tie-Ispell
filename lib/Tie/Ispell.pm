@@ -12,11 +12,16 @@ Tie::Ispell - Ties an hash with an ispell dictionary
 
 =head1 VERSION
 
-Version 0.02
+Version 0.03
 
 =cut
 
-our $VERSION = '0.02';
+our $VERSION = '0.03';
+
+=head1 ABSTRACT
+
+This module implements a way to deal with ispell dictionaries using a
+hash. It tries to work also with aspell.
 
 =head1 SYNOPSIS
 
@@ -28,6 +33,8 @@ our $VERSION = '0.02';
     if ($dict{dog}) {
       print "dog is a word"
     }
+
+    $nearmisses = $dict{doj};
 
     if (exists($dict{dog})) {
       print "dog is a word"
@@ -66,6 +73,8 @@ Fetches a word from the ispell dictionary
   $dic{dogs} # returns dog
   $dic{dog}  # returns dog
 
+  $dic{doj}  # returns a reference for a list of near misses
+
 =cut
 
 sub FETCH {
@@ -84,6 +93,10 @@ sub FETCH {
     return $word
   } elsif ($ans =~ m!^\+\s(\w+)!) {
     return lc($1)
+  } elsif ($ans =~ m!^\&\s\w+\s\d+\s\d+:\s*!) {
+    chomp(my $RHS = $');
+    my @RHS = split /\s*,\s*/, $RHS;
+    return [@RHS];
   } else {
     return undef;
   }

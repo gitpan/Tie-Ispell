@@ -1,5 +1,12 @@
 Revision history for Tie-Ispell
 
+0.03    2005, 23 January (19:50)
+	- Added support for nearmisses
+	- Changed test so we can work with aspell emulation mode
+	for ispell. Note that this way the morphological information
+	get lost (for example, $dic{dogs} will be "dogs" instead of
+	the ispell answer "dog");
+
 0.02    2004, 17 December (13:13)
 	- Added support for exist($dic{word})
 	- Added support for store: $dic{word} = "now exists";

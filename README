@@ -1,15 +1,14 @@
-Tie-Ispell
+ Tie::Ispell version 0.03
+==========================
 
-The README is used to introduce the module and provide instructions on
-how to install the module, any machine dependencies it may have (for
-example C compilers and installed libraries) and any other information
-that should be provided before the module is installed.
+Ties an hash with an ispell dictionary
 
-A README file is required for CPAN modules since CPAN extracts the README
-file from a module distribution so that people browsing the archive
-can use it get an idea of the modules uses. It is usually a good idea
-to provide version information here so that people can decide whether
-fixes for the module are worth downloading.
+
+ABSTRACT
+
+This module implements a way to deal with ispell dictionaries using a
+hash. It tries to work also with aspell.
+
 
 INSTALLATION
 
@@ -21,11 +20,10 @@ To install this module, run the following commands:
     make install
 
 
-COPYRIGHT AND LICENCE
+COPYRIGHT AND LICENSE
 
-Put the correct copyright and licence information here.
+Copyright 2004 Natura Project, All Rights Reserved.
 
-Copyright (C) 2004 Alberto Simoes
+This program is free software; you can redistribute it and/or modify it
+under the same terms as Perl itself.
 
-This library is free software; you can redistribute it and/or modify
-it under the same terms as Perl itself.

@@ -1,5 +1,5 @@
 # -*- cperl -*-
-use Test::More tests => 9;
+use Test::More tests => 12;
 
 BEGIN {
   use_ok( 'Tie::Ispell' );
@@ -10,13 +10,19 @@ BEGIN {
 tie %dic, 'Tie::Ispell', "english";
 
 is(  $dic{dog}, "dog");
-is( $dic{dogs}, "dog");
-is(  $dic{zbr}, undef);
+like( $dic{dogs}, qr/^dogs?$/);
+is(  $dic{dfsjfhsjd}, undef);
+
+my $nearmisses = $dic{doj};
+
+ok(grep { $_ eq "dog" } @$nearmisses );
+ok(grep { $_ eq "dot" } @$nearmisses );
 
 ok(  exists($dic{dog}));
 ok( exists($dic{dogs}));
-ok(! exists($dic{zbr}));
+ok(!exists($dic{dok}));
+ok(! exists($dic{dfsjfhsjd}));
 
-$dic{zbr} = 1;
-is(  $dic{zbr}, "zbr");
-ok( exists($dic{zbr}));
+$dic{dfsjfhsjd} = 1;
+is(  $dic{dfsjfhsjd}, "dfsjfhsjd");
+ok( exists($dic{dfsjfhsjd}));
