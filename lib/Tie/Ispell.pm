@@ -12,11 +12,11 @@ Tie::Ispell - Ties an hash with an ispell dictionary
 
 =head1 VERSION
 
-Version 0.03
+Version 0.04
 
 =cut
 
-our $VERSION = '0.03';
+our $VERSION = '0.04';
 
 =head1 ABSTRACT
 
@@ -34,13 +34,29 @@ hash. It tries to work also with aspell.
       print "dog is a word"
     }
 
-    $nearmisses = $dict{doj};
-
     if (exists($dict{dog})) {
       print "dog is a word"
     }
 
     $dict{foo} = "now is a word :-)";
+
+    # using nearmisses feature
+
+    tie %dict, 'Tie::Ispell', "english", 1;
+
+    if (exists($dict{dog})) {
+      print "dog is a word"
+    }
+
+    if ($x = $dict{doj}) {
+       if (ref($x) eq "ARRAY") {
+         # doj is not a word, but I have a list of nearmisses
+         @nearmisses = @$x;
+       } else {
+         # doj is a word
+       }
+    }
+
 
 =head1 FUNCTIONS
 
@@ -50,17 +66,25 @@ Used for the tie method. Use tie as:
 
   tie %dic, 'Tie::Ispell', 'dictionaryname';
 
+If you want to have access to nearmisses, use
+
+  tie %dic, 'Tie::Ispell', 'dictionaryname', 1;
+
 =cut
 
 sub TIEHASH {
   my $class = shift;
   my $dict  = shift;
-  my $self  = { dict => $dict };
+  my $nmiss = shift || 0;
+  my $self  = { dict => $dict,
+		nmiss => $nmiss};
 
   open2($self->{read}, $self->{write}, "ispell -d $dict -a");
 
   my $x = $self->{read};
-  <$x>;
+  my $c = <$x>;
+
+  return undef unless defined $c; #unless $c =~ m!ispell!i;
 
   return bless $self, $class #amen
 }
@@ -72,7 +96,12 @@ Fetches a word from the ispell dictionary
 
   $dic{dogs} # returns dog
   $dic{dog}  # returns dog
+  $dic{doj}  # returns undef
 
+If you tied-up with nearmisses,
+
+  $dic{dogs} # returns dog
+  $dic{dog}  # returns dog
   $dic{doj}  # returns a reference for a list of near misses
 
 =cut
@@ -94,9 +123,13 @@ sub FETCH {
   } elsif ($ans =~ m!^\+\s(\w+)!) {
     return lc($1)
   } elsif ($ans =~ m!^\&\s\w+\s\d+\s\d+:\s*!) {
-    chomp(my $RHS = $');
-    my @RHS = split /\s*,\s*/, $RHS;
-    return [@RHS];
+    if ($self->{nmiss}) {
+      chomp(my $RHS = $');
+      my @RHS = split /\s*,\s*/, $RHS;
+      return [@RHS];
+    } else {
+      return undef;
+    }
   } else {
     return undef;
   }
@@ -106,9 +139,11 @@ sub FETCH {
 
 =head2 EXISTS
 
-Checks if a word exists on the dictionary
+Checks if a word exists on the dictionary. Works in the same way with
+or without near misses.
 
   exists($dic{dogs})
+  exists($dic{doj})
 
 =cut
 
@@ -165,7 +200,7 @@ be notified of progress on your bug as I make changes.
 
 =head1 COPYRIGHT & LICENSE
 
-Copyright 2004 Natura Project, All Rights Reserved.
+Copyright 2004-2005 Natura Project, All Rights Reserved.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
