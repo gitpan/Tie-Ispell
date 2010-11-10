@@ -5,6 +5,7 @@ use strict;
 
 use locale;
 use IPC::Open2;
+use Tie::Ispell::ConfigData;
 
 =head1 NAME
 
@@ -12,11 +13,11 @@ Tie::Ispell - Ties an hash with an ispell dictionary
 
 =head1 VERSION
 
-Version 0.04
+Version 0.05
 
 =cut
 
-our $VERSION = '0.04';
+our $VERSION = '0.05';
 
 =head1 ABSTRACT
 
@@ -39,6 +40,9 @@ hash. It tries to work also with aspell.
     }
 
     $dict{foo} = "now is a word :-)";
+
+
+
 
     # using nearmisses feature
 
@@ -79,7 +83,8 @@ sub TIEHASH {
   my $self  = { dict => $dict,
 		nmiss => $nmiss};
 
-  open2($self->{read}, $self->{write}, "ispell -d $dict -a");
+  my $binary = Tie::Ispell::ConfigData->config("ispell");
+  open2($self->{read}, $self->{write}, "$binary -d $dict -a");
 
   my $x = $self->{read};
   my $c = <$x>;

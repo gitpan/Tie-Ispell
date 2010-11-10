@@ -1,7 +1,15 @@
 Revision history for Tie-Ispell
 
+0.05    2010, 10 November (18:46)
+        - support to detect ispell, aspell or hunspell
+        - skip tests if no english dictionary available
+        - changed from ExtUtils::MakeMaker to Module::Build
+        - Probably I will just stop maintaining this module as nobody
+          uses it (as far as I know). So, if you are interested in it
+          (if you use it or want to maintain it) let me know.
+
 0.04    2005, 24 January (16:33)
-	- Added support to choose if you want to use narmisses
+	- Added support to choose if you want to use nearmisses
 	- Added test and code to support unkown dictionaries
 
 0.03    2005, 23 January (19:50)
