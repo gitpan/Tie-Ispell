@@ -10,7 +10,7 @@ my $builder = Module::Build->new
    license => 'perl',
    module_name => 'Tie::Ispell',
    dist_author => 'Alberto Simoes <ambs@cpan.org>',
-   build_requires => {
+   configure_requires => {
                       'Config::AutoConf' => '0.16',
                      },
    requires => {

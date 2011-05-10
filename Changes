@@ -1,5 +1,8 @@
 Revision history for Tie-Ispell
 
+0.06    2011, 10 April (22:01)
+        - Fixed configure-requires deprendency
+
 0.05    2010, 10 November (18:46)
         - support to detect ispell, aspell or hunspell
         - skip tests if no english dictionary available
