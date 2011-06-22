@@ -22,7 +22,10 @@ my $builder = Module::Build->new
 
 my $ispell = Config::AutoConf->check_progs("ispell", "aspell", "hunspell");
 
-die "No ispell compatible binary available" unless $ispell;
+unless ($ispell) {
+    print STDERR "No ispell compatible binary available\n";
+    exit 0;
+}
 
 $builder->config_data("ispell" => $ispell);
 
