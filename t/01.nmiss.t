@@ -16,6 +16,7 @@ my $spell = Tie::Ispell::ConfigData->config("ispell");
 SKIP: {
     skip "Nao temos english...", 9 if system "$spell -d english -l < $dn";
 
+    my %dic;
     tie %dic, 'Tie::Ispell', "english", 1;
 
     is(  $dic{dog}, "dog");
@@ -28,7 +29,7 @@ SKIP: {
     ok(grep { $_ eq "dot" } @$nearmisses );
 
     ok(  exists($dic{dog}));
-    ok( exists($dic{dogs}));
-    ok(!exists($dic{dok}));
+    ok(  exists($dic{dogs}));
+    ok(! exists($dic{dok}));
     ok(! exists($dic{dfsjfhsjd}));
 }

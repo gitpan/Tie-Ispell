@@ -1,5 +1,9 @@
 Revision history for Tie-Ispell
 
+0.08    2011, 23 November (22:26)
+        - declare variables in test files, since some some cpantesters
+          complain about it.
+
 0.07    2011, 22 June (18:58)
         - bail out if we do not have ([ia]|hun)spell.
 
